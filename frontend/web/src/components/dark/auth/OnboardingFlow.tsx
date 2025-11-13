@@ -4,10 +4,10 @@ import { Shield, Camera, Bell, Key } from 'lucide-react';
 
 interface OnboardingFlowProps {
   onComplete: () => void;
-  isWeb?: boolean;
+  isWeb: boolean;
 }
 
-export function OnboardingFlow({ onComplete, isWeb = false }: OnboardingFlowProps) {
+export function OnboardingFlow({ onComplete, isWeb: _isWeb }: OnboardingFlowProps) {
   const [step, setStep] = useState(0);
 
   const slides = [

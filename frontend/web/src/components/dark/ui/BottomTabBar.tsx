@@ -5,10 +5,9 @@ type Tab = 'home' | 'credentials' | 'scan' | 'activity' | 'profile';
 interface BottomTabBarProps {
   currentTab: Tab;
   onTabChange: (tab: Tab) => void;
-  userRole: 'holder' | 'issuer' | 'verifier';
 }
 
-export function BottomTabBar({ currentTab, onTabChange, userRole }: BottomTabBarProps) {
+export function BottomTabBar({ currentTab, onTabChange }: BottomTabBarProps) {
   const tabs = [
     { id: 'home' as Tab, icon: Home, label: 'Home' },
     { id: 'credentials' as Tab, icon: FileText, label: 'Creds' },

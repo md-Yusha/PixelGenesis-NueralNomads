@@ -10,7 +10,7 @@ interface RegisterScreenProps {
   isWeb?: boolean;
 }
 
-export function RegisterScreen({ onRegisterComplete, onNavigateToLogin, isWeb = false }: RegisterScreenProps) {
+export function RegisterScreen({ onRegisterComplete, onNavigateToLogin, isWeb: _isWeb = false }: RegisterScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [selectedRole, setSelectedRole] = useState<'holder' | 'issuer' | 'verifier'>('holder');
