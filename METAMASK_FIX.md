@@ -2,7 +2,7 @@
 
 ## Error: "Could not fetch chain ID. Is your RPC URL correct?"
 
-This error means MetaMask cannot connect to your Hardhat node. Follow these steps:
+This error means MetaMask cannot c onnect to your Hardhat node. Follow these steps:
 
 ## Step 1: Make Sure Hardhat Node is Running
 
