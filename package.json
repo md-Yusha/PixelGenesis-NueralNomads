@@ -1,16 +1,30 @@
 {
-  "name": "pixelgenesis",
-  "version": "0.1.0",
-  "private": true,
+  "name": "nexid",
+  "version": "1.0.0",
+  "description": "Decentralized Digital Identity & Credential Vault",
+  "main": "index.js",
   "scripts": {
-    "hardhat:node": "hardhat node",
-    "hardhat:compile": "hardhat compile",
-    "hardhat:test": "hardhat test",
-    "hardhat:deploy": "hardhat run scripts/deploy.js --network localhost"
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "deploy": "hardhat run scripts/deploy.js --network localhost",
+    "transfer-ownership": "node scripts/transferOwnershipWrapper.js",
+    "check-owner": "npx hardhat run scripts/checkOwner.js --network localhost",
+    "frontend": "cd frontend && npm run dev",
+    "dev": "cd frontend && npm run dev",
+    "install-all": "npm install && cd frontend && npm install",
+    "verify-setup": "node scripts/verify-setup.js"
   },
+  "keywords": ["web3", "identity", "credentials", "ipfs", "ethereum"],
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.3.1"
   }
 }
 

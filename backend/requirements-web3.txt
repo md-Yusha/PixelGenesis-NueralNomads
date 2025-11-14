@@ -1,5 +1,0 @@
-# Blockchain dependencies (install separately if you need full blockchain support)
-# On Windows, install Microsoft Visual C++ Build Tools first:
-# https://visualstudio.microsoft.com/visual-cpp-build-tools/
-web3==6.11.3
-
