@@ -1,6 +1,6 @@
 # Pinata IPFS Setup Guide
 
-PixelLocker uses Pinata for reliable IPFS document storage. Follow these steps to set up Pinata.
+PixelLocker uses Pinata for reliable IPFS document storage. Follow these steps to set up Pinata....
 
 ## Why Pinata?
 
@@ -79,6 +79,7 @@ PixelLocker uses Pinata for reliable IPFS document storage. Follow these steps t
 ### Error: "Pinata upload failed: Invalid JWT"
 
 **Solution:**
+
 - Make sure your JWT token is correct
 - Check that you copied the full token (it's very long)
 - Make sure there are no extra spaces in `.env` file
@@ -87,6 +88,7 @@ PixelLocker uses Pinata for reliable IPFS document storage. Follow these steps t
 ### Error: "Pinata upload failed: Unauthorized"
 
 **Solution:**
+
 - Your JWT token might have expired
 - Generate a new API key in Pinata
 - Update the `.env` file with the new token
@@ -95,6 +97,7 @@ PixelLocker uses Pinata for reliable IPFS document storage. Follow these steps t
 ### Files Not Appearing in Pinata Dashboard
 
 **Solution:**
+
 - Wait a few seconds - Pinata might take a moment to index
 - Check the browser console for any errors
 - Verify the upload was successful (check transaction hash)
@@ -103,6 +106,7 @@ PixelLocker uses Pinata for reliable IPFS document storage. Follow these steps t
 ### Still Using Public IPFS
 
 If you see "Public IPFS upload" in console:
+
 - Check that `REACT_APP_PINATA_JWT` is set in `.env`
 - Make sure the `.env` file is in `frontend/` directory
 - Restart the frontend server
@@ -120,6 +124,7 @@ For production, consider upgrading to a paid plan for more storage.
 ## Security Notes
 
 ⚠️ **Important:**
+
 - Never commit `.env` file to Git (it's already in `.gitignore`)
 - Don't share your JWT token publicly
 - If your token is compromised, revoke it in Pinata and create a new one
@@ -130,6 +135,7 @@ For production, consider upgrading to a paid plan for more storage.
 If you don't want to use Pinata, the app will automatically fall back to public IPFS API. However, this is less reliable and has rate limits.
 
 To disable Pinata:
+
 1. Remove or comment out `REACT_APP_PINATA_JWT` in `.env`
 2. Or set `usePinata: false` in `frontend/src/config.js`
 
@@ -141,4 +147,3 @@ To disable Pinata:
 ---
 
 **That's it!** Your documents will now be stored reliably on Pinata's IPFS network! 🎉
-
