@@ -4,6 +4,7 @@ import { Shield, UserPlus, X, CheckCircle, AlertCircle } from 'lucide-react'
 import { ethers } from 'ethers'
 import { getRoleManagerContract, getRoleManagerContractReadOnly, checkMetaMask } from '../../utils/web3'
 import { formatAddress } from '../../utils/helpers'
+import { logActivity, ActivityType } from '../../utils/activityLogger'
 
 const OwnerDashboard = ({ account }) => {
   const [issuers, setIssuers] = useState([])
@@ -280,6 +281,11 @@ const OwnerDashboard = ({ account }) => {
           text: `Transaction succeeded but verification failed. Please refresh and check.` 
         })
       } else {
+        // Log activity
+        logActivity(account, ActivityType.ISSUER_ADDED, {
+          address: normalizedAddress,
+        })
+        
         setMessage({ type: 'success', text: `Issuer ${formatAddress(normalizedAddress)} added successfully!` })
       }
       
@@ -306,6 +312,11 @@ const OwnerDashboard = ({ account }) => {
       const contract = await getRoleManagerContract()
       const tx = await contract.removeIssuer(issuerAddress)
       await tx.wait()
+
+      // Log activity
+      logActivity(account, ActivityType.ISSUER_REMOVED, {
+        address: issuerAddress,
+      })
 
       setMessage({ type: 'success', text: `Issuer ${formatAddress(issuerAddress)} removed successfully!` })
       // Reload roles from contract to ensure consistency
@@ -416,6 +427,11 @@ const OwnerDashboard = ({ account }) => {
           text: `Transaction succeeded but verification failed. Please refresh and check.` 
         })
       } else {
+        // Log activity
+        logActivity(account, ActivityType.VERIFIER_ADDED, {
+          address: normalizedAddress,
+        })
+        
         setMessage({ type: 'success', text: `Verifier ${formatAddress(normalizedAddress)} added successfully!` })
       }
       
@@ -454,6 +470,11 @@ const OwnerDashboard = ({ account }) => {
       const tx = await contract.setOwner(normalizedAddress)
       await tx.wait()
 
+      // Log activity
+      logActivity(account, ActivityType.OWNERSHIP_TRANSFERRED, {
+        newOwner: normalizedAddress,
+      })
+
       setMessage({ type: 'success', text: `Ownership transferred to ${formatAddress(normalizedAddress)} successfully!` })
       setTransferToAddress('')
       setShowTransferOwnership(false)
@@ -481,6 +502,11 @@ const OwnerDashboard = ({ account }) => {
       const tx = await contract.removeVerifier(verifierAddress)
       await tx.wait()
 
+      // Log activity
+      logActivity(account, ActivityType.VERIFIER_REMOVED, {
+        address: verifierAddress,
+      })
+
       setMessage({ type: 'success', text: `Verifier ${formatAddress(verifierAddress)} removed successfully!` })
       // Reload roles from contract to ensure consistency
       await loadRoles()
@@ -499,7 +525,7 @@ const OwnerDashboard = ({ account }) => {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-3xl font-bold text-gray-100 mb-2 flex items-center gap-3">
+        <h2 className="text-lg font-bold text-gray-100 mb-2 flex items-center gap-3">
           <Shield size={32} className="text-neon-cyan" />
           Owner Dashboard
         </h2>
@@ -527,7 +553,7 @@ const OwnerDashboard = ({ account }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="p-4 rounded-lg bg-yellow-500/20 border border-yellow-500/50 text-yellow-400"
+            className="p-4 bg-neon-cyan/20 border-2 border-neon-cyan/50 text-neon-cyan"
           >
             <p className="font-bold mb-2">⚠️ RoleManager Contract Not Available</p>
             <p className="text-sm">
@@ -545,7 +571,7 @@ const OwnerDashboard = ({ account }) => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-4 rounded-lg bg-yellow-500/20 border border-yellow-500/50 text-yellow-400"
+            className="p-4 bg-neon-cyan/20 border-2 border-neon-cyan/50 text-neon-cyan"
           >
             <p className="font-bold mb-2">⚠️ Ownership Mismatch</p>
             <p className="text-sm mb-2">
@@ -567,9 +593,9 @@ const OwnerDashboard = ({ account }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded-lg ${
+            className={`p-4 ${
               message.type === 'error' 
-                ? 'bg-red-500/20 border border-red-500/50 text-red-400'
+                ? 'bg-neon-purple/20 border border-neon-purple/50 text-neon-purple'
                 : 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
             }`}
           >
@@ -580,10 +606,10 @@ const OwnerDashboard = ({ account }) => {
 
       {/* Transfer Ownership Section (only show if user is current owner) */}
       {isContractOwner && contractOwner && (
-        <div className="glass-card p-6 rounded-xl border-2 border-yellow-500/50 mb-6">
+        <div className="glass-card p-4 border-2 border-neon-cyan/50 mb-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-100 flex items-center gap-2">
-              <Shield size={24} className="text-yellow-400" />
+            <h3 className="text-lg font-bold text-gray-100 flex items-center gap-2">
+              <Shield size={24} className="text-neon-cyan" />
               Transfer Ownership
             </h3>
             <button
@@ -604,12 +630,12 @@ const OwnerDashboard = ({ account }) => {
                   value={transferToAddress}
                   onChange={(e) => setTransferToAddress(e.target.value)}
                   placeholder="0x..."
-                  className="flex-1 px-4 py-3 bg-dark-card border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20"
+                  className="flex-1 px-4 py-3 bg-dark-card border-2 border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20 text-lg"
                 />
                 <button
                   onClick={handleTransferOwnership}
                   disabled={loading || !transferToAddress.trim()}
-                  className="px-6 py-3 bg-yellow-500/20 text-yellow-400 border border-yellow-500/50 rounded-lg hover:bg-yellow-500/30 transition-colors disabled:opacity-50"
+                  className="px-6 py-3 bg-neon-cyan/20 text-neon-cyan border-2 border-neon-cyan/50 hover:bg-neon-cyan/30 transition-colors disabled:opacity-50"
                 >
                   {loading ? 'Transferring...' : 'Transfer'}
                 </button>
@@ -620,7 +646,7 @@ const OwnerDashboard = ({ account }) => {
       )}
 
       {/* Add Issuer Section */}
-      <div className="glass-card p-6 rounded-xl">
+      <div className="glass-card p-4">
         <h3 className="text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
           <UserPlus size={24} className="text-neon-cyan" />
           Add Issuer
@@ -631,7 +657,7 @@ const OwnerDashboard = ({ account }) => {
             value={newIssuerAddress}
             onChange={(e) => setNewIssuerAddress(e.target.value)}
             placeholder="0x..."
-            className="flex-1 px-4 py-3 bg-dark-card border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20"
+            className="flex-1 px-4 py-3 bg-dark-card border-2 border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20 text-lg"
           />
           <button
             onClick={handleAddIssuer}
@@ -644,7 +670,7 @@ const OwnerDashboard = ({ account }) => {
       </div>
 
       {/* Issuers List */}
-      <div className="glass-card p-6 rounded-xl">
+      <div className="glass-card p-4">
         <h3 className="text-xl font-bold text-gray-100 mb-4">Issuers ({issuers.length})</h3>
         {issuers.length === 0 ? (
           <p className="text-gray-400 text-center py-8">No issuers added yet</p>
@@ -653,13 +679,13 @@ const OwnerDashboard = ({ account }) => {
             {issuers.map((address, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-3 bg-dark-card rounded-lg"
+                className="flex items-center justify-between p-3 bg-dark-card border-2 border-gray-700"
               >
                 <span className="text-neon-cyan font-mono text-sm">{formatAddress(address)}</span>
                 <button
                   onClick={() => handleRemoveIssuer(address)}
                   disabled={loading}
-                  className="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500/30 transition-colors disabled:opacity-50 flex items-center gap-2"
+                  className="px-3 py-1 bg-neon-purple/20 text-neon-purple border-2 border-neon-purple/50 hover:bg-neon-purple/30 transition-colors disabled:opacity-50 flex items-center gap-2"
                 >
                   <X size={16} />
                   Remove
@@ -671,7 +697,7 @@ const OwnerDashboard = ({ account }) => {
       </div>
 
       {/* Add Verifier Section */}
-      <div className="glass-card p-6 rounded-xl">
+      <div className="glass-card p-4">
         <h3 className="text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
           <UserPlus size={24} className="text-neon-purple" />
           Add Verifier
@@ -682,7 +708,7 @@ const OwnerDashboard = ({ account }) => {
             value={newVerifierAddress}
             onChange={(e) => setNewVerifierAddress(e.target.value)}
             placeholder="0x..."
-            className="flex-1 px-4 py-3 bg-dark-card border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20"
+            className="flex-1 px-4 py-3 bg-dark-card border-2 border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20 text-lg"
           />
           <button
             onClick={handleAddVerifier}
@@ -695,7 +721,7 @@ const OwnerDashboard = ({ account }) => {
       </div>
 
       {/* Verifiers List */}
-      <div className="glass-card p-6 rounded-xl">
+      <div className="glass-card p-4">
         <h3 className="text-xl font-bold text-gray-100 mb-4">Verifiers ({verifiers.length})</h3>
         {verifiers.length === 0 ? (
           <p className="text-gray-400 text-center py-8">No verifiers added yet</p>
@@ -704,13 +730,13 @@ const OwnerDashboard = ({ account }) => {
             {verifiers.map((address, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-3 bg-dark-card rounded-lg"
+                className="flex items-center justify-between p-3 bg-dark-card border-2 border-gray-700"
               >
                 <span className="text-neon-purple font-mono text-sm">{formatAddress(address)}</span>
                 <button
                   onClick={() => handleRemoveVerifier(address)}
                   disabled={loading}
-                  className="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500/30 transition-colors disabled:opacity-50 flex items-center gap-2"
+                  className="px-3 py-1 bg-neon-purple/20 text-neon-purple border-2 border-neon-purple/50 hover:bg-neon-purple/30 transition-colors disabled:opacity-50 flex items-center gap-2"
                 >
                   <X size={16} />
                   Remove

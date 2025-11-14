@@ -3,63 +3,82 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    border-radius: 0 !important;
+  }
+  
   body {
     background-color: #0D0D0D;
     color: #F5F5F5;
-    font-family: 'Inter', 'Poppins', sans-serif;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Press Start 2P', cursive;
+  }
+  
+  button, input, textarea, select {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.7rem;
   }
 }
 
 @layer utilities {
   .text-pixel {
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.75rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
   
   .neon-cyan {
-    color: #00FFC6;
-    text-shadow: 0 0 10px #00FFC6, 0 0 20px #00FFC6, 0 0 30px #00FFC6;
+    color: #60A5FA;
+    text-shadow: 0 0 8px #60A5FA, 0 0 16px #60A5FA, 0 0 24px #3B82F6;
   }
   
   .neon-purple {
-    color: #A855F7;
-    text-shadow: 0 0 10px #A855F7, 0 0 20px #A855F7;
+    color: #3B82F6;
+    text-shadow: 0 0 8px #3B82F6, 0 0 16px #3B82F6;
   }
   
   .glass-card {
-    background: rgba(26, 26, 26, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 255, 198, 0.2);
+    background: rgba(26, 26, 26, 0.95);
+    border: 2px solid rgba(59, 130, 246, 0.4);
+    padding: 1.5rem !important;
   }
   
   .neon-button {
-    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300;
-    background: linear-gradient(135deg, #00FFC6 0%, #00D4AA 100%);
-    color: #0D0D0D;
-    box-shadow: 0 0 20px rgba(0, 255, 198, 0.5);
+    @apply px-6 py-3 font-semibold transition-all duration-300;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: #FFFFFF;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    border: 2px solid #60A5FA;
+    font-size: 0.7rem;
   }
   
   .neon-button:hover {
-    box-shadow: 0 0 30px rgba(0, 255, 198, 0.8);
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
     transform: translateY(-2px);
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   }
   
   .neon-button-secondary {
-    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+    @apply px-6 py-3 font-semibold transition-all duration-300;
     background: transparent;
-    color: #00FFC6;
-    border: 2px solid #00FFC6;
-    box-shadow: 0 0 20px rgba(0, 255, 198, 0.3);
+    color: #60A5FA;
+    border: 2px solid #60A5FA;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    font-size: 0.7rem;
   }
   
   .neon-button-secondary:hover {
-    box-shadow: 0 0 30px rgba(0, 255, 198, 0.6);
-    background: rgba(0, 255, 198, 0.1);
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+    background: rgba(59, 130, 246, 0.1);
   }
   
   .glow-orb {
-    @apply absolute rounded-full blur-3xl opacity-30;
+    @apply absolute blur-3xl opacity-30;
     animation: float 6s ease-in-out infinite;
   }
 }

@@ -4,6 +4,7 @@ import { Scan, Upload, Camera, X, FileText, Download, ExternalLink, CheckCircle,
 import { Html5Qrcode } from 'html5-qrcode'
 import { formatAddress } from '../../utils/helpers'
 import { getIPFSFileUrl } from '../../utils/ipfs'
+import { logActivity, ActivityType } from '../../utils/activityLogger'
 
 const ScanDocument = ({ account }) => {
   const [scanning, setScanning] = useState(false)
@@ -150,6 +151,14 @@ const ScanDocument = ({ account }) => {
         ipfsUrl: shareData.ipfsUrl || getIPFSFileUrl(shareData.ipfsHash)
       })
 
+      // Log activity
+      if (account) {
+        logActivity(account, ActivityType.DOCUMENT_SCANNED, {
+          documentName: shareData.documentName,
+          ipfsHash: shareData.ipfsHash,
+        })
+      }
+
       setMessage({ 
         type: 'success', 
         text: 'Document found! You can now view and download it.' 
@@ -205,7 +214,7 @@ const ScanDocument = ({ account }) => {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-3xl font-bold text-gray-100 mb-2 flex items-center gap-3">
+        <h2 className="text-lg font-bold text-gray-100 mb-2 flex items-center gap-3">
           <Scan size={32} className="text-neon-cyan" />
           Scan Document
         </h2>
@@ -220,11 +229,11 @@ const ScanDocument = ({ account }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded-lg ${
+            className={`p-4 ${
               message.type === 'error' 
-                ? 'bg-red-500/20 border border-red-500/50 text-red-400'
+                ? 'bg-neon-purple/20 border border-neon-purple/50 text-neon-purple'
                 : message.type === 'success'
-                ? 'bg-green-500/20 border border-green-500/50 text-green-400'
+                ? 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
                 : 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
             }`}
           >
@@ -238,7 +247,7 @@ const ScanDocument = ({ account }) => {
       </AnimatePresence>
 
       {!documentData ? (
-        <div className="glass-card p-6 rounded-xl space-y-6">
+        <div className="glass-card p-4 space-y-4">
           {/* Mode Selection */}
           <div className="flex gap-4">
             <button
@@ -246,7 +255,7 @@ const ScanDocument = ({ account }) => {
                 resetScan()
                 setScanMode('camera')
               }}
-              className={`flex-1 px-4 py-3 rounded-lg transition-all ${
+              className={`flex-1 px-4 py-3 transition-all ${
                 scanMode === 'camera'
                   ? 'bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan'
                   : 'bg-dark-card border border-gray-700 text-gray-400 hover:border-neon-cyan/50'
@@ -260,7 +269,7 @@ const ScanDocument = ({ account }) => {
                 resetScan()
                 setScanMode('upload')
               }}
-              className={`flex-1 px-4 py-3 rounded-lg transition-all ${
+              className={`flex-1 px-4 py-3 transition-all ${
                 scanMode === 'upload'
                   ? 'bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan'
                   : 'bg-dark-card border border-gray-700 text-gray-400 hover:border-neon-cyan/50'
@@ -274,7 +283,7 @@ const ScanDocument = ({ account }) => {
           {/* Camera Scanner */}
           {scanMode === 'camera' && (
             <div className="space-y-4">
-              <div id="qr-reader" className="w-full rounded-lg overflow-hidden bg-black min-h-[300px]"></div>
+              <div id="qr-reader" className="w-full overflow-hidden bg-black min-h-[300px] border-2 border-gray-700"></div>
               
               {!scanning ? (
                 <button
@@ -299,7 +308,7 @@ const ScanDocument = ({ account }) => {
           {/* Image Upload */}
           {scanMode === 'upload' && (
             <div className="space-y-4">
-              <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center">
+              <div className="border-2 border-dashed border-gray-700 p-8 text-center">
                 <Upload size={48} className="mx-auto mb-4 text-gray-500" />
                 <p className="text-gray-400 mb-4">
                   Upload an image containing a QR code
@@ -330,10 +339,10 @@ const ScanDocument = ({ account }) => {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="glass-card p-6 rounded-xl space-y-6"
+          className="glass-card p-4 space-y-4"
         >
           <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-bold text-gray-100 flex items-center gap-2">
+            <h3 className="text-base font-bold text-gray-100 flex items-center gap-2">
               <FileText size={28} className="text-neon-cyan" />
               Shared Document
             </h3>

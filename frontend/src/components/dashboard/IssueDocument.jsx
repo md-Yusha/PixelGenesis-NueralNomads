@@ -4,6 +4,7 @@ import { Upload, CheckCircle, X } from 'lucide-react'
 import { ethers } from 'ethers'
 import { getCredentialManagerContract, getCredentialManagerContractReadOnly } from '../../utils/web3'
 import { uploadToIPFS } from '../../utils/ipfs'
+import { logActivity, ActivityType } from '../../utils/activityLogger'
 
 const IssueDocument = ({ account }) => {
   const [subjectAddress, setSubjectAddress] = useState('')
@@ -145,6 +146,14 @@ const IssueDocument = ({ account }) => {
         }
       }
       
+      // Log activity
+      logActivity(account, ActivityType.CREDENTIAL_ISSUED, {
+        recipient: normalizedSubject,
+        credentialId,
+        ipfsHash,
+        credentialName,
+      })
+
       if (verified && storedIssuerAddress) {
         console.log('')
         console.log('🔍 IMPORTANT: The credential was stored with issuer address:', storedIssuerAddress)
@@ -195,7 +204,7 @@ const IssueDocument = ({ account }) => {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-3xl font-bold text-gray-100 mb-2">Issue Document</h2>
+        <h2 className="text-lg font-bold text-gray-100 mb-2">Issue Document</h2>
         <p className="text-gray-400">
           Upload a document and issue it as a verifiable credential to a recipient.
         </p>
@@ -207,12 +216,12 @@ const IssueDocument = ({ account }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded-lg ${
+            className={`p-4 ${
               message.type === 'error' 
-                ? 'bg-red-500/20 border border-red-500/50 text-red-400'
+                ? 'bg-neon-purple/20 border border-neon-purple/50 text-neon-purple'
                 : message.type === 'success'
                 ? 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
-                : 'bg-blue-500/20 border border-blue-500/50 text-blue-400'
+                : 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
             }`}
           >
             {message.text}
@@ -224,7 +233,7 @@ const IssueDocument = ({ account }) => {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="glass-card p-6 rounded-xl border-2 border-neon-cyan/50"
+          className="glass-card p-4 border-2 border-neon-cyan/50"
         >
           <div className="flex items-center gap-3 text-neon-cyan mb-4">
             <CheckCircle size={32} />
@@ -236,7 +245,7 @@ const IssueDocument = ({ account }) => {
         </motion.div>
       )}
 
-      <form onSubmit={handleIssue} className="glass-card p-8 rounded-xl space-y-6">
+      <form onSubmit={handleIssue} className="glass-card p-4 space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Recipient Address
@@ -246,7 +255,7 @@ const IssueDocument = ({ account }) => {
             value={subjectAddress}
             onChange={(e) => setSubjectAddress(e.target.value)}
             placeholder="0x..."
-            className="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20"
+            className="w-full px-4 py-3 bg-dark-card border-2 border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20 text-lg"
             required
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -263,7 +272,7 @@ const IssueDocument = ({ account }) => {
             value={credentialName}
             onChange={(e) => setCredentialName(e.target.value)}
             placeholder="e.g., Degree Certificate, Employment Letter"
-            className="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20"
+            className="w-full px-4 py-3 bg-dark-card border-2 border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20 text-lg"
           />
         </div>
 
@@ -273,7 +282,7 @@ const IssueDocument = ({ account }) => {
           </label>
           <div
             onClick={() => document.getElementById('file-input').click()}
-            className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center cursor-pointer hover:border-neon-cyan transition-colors"
+            className="border-2 border-dashed border-gray-700 p-8 text-center cursor-pointer hover:border-neon-cyan transition-colors"
           >
             <input
               id="file-input"

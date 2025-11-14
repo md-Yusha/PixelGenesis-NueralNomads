@@ -21,6 +21,8 @@ function App() {
     }
 
     try {
+      // Only check for existing connection, don't auto-connect
+      // User must explicitly click "Connect Wallet" to connect
       const currentAccount = await getCurrentAccount()
       if (currentAccount) {
         setAccount(currentAccount)

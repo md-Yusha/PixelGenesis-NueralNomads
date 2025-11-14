@@ -88,10 +88,10 @@ const ShareView = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-dark-bg flex items-center justify-center">
-        <div className="glass-card p-8 rounded-xl max-w-md w-full">
+        <div className="glass-card p-4 max-w-md w-full">
           <div className="text-center space-y-4">
             <AlertCircle size={64} className="mx-auto text-red-400" />
-            <h2 className="text-2xl font-bold text-gray-100">Error</h2>
+            <h2 className="text-xl font-bold text-gray-100">Error</h2>
             <p className="text-gray-400">{error}</p>
             <button
               onClick={() => navigate('/')}
@@ -108,10 +108,10 @@ const ShareView = () => {
   if (!documentData) {
     return (
       <div className="min-h-screen bg-dark-bg flex items-center justify-center">
-        <div className="glass-card p-8 rounded-xl max-w-md w-full">
+        <div className="glass-card p-4 max-w-md w-full">
           <div className="text-center space-y-4">
             <AlertCircle size={64} className="mx-auto text-yellow-400" />
-            <h2 className="text-2xl font-bold text-gray-100">No Document Found</h2>
+            <h2 className="text-xl font-bold text-gray-100">No Document Found</h2>
             <p className="text-gray-400">The document link is invalid or expired.</p>
             <button
               onClick={() => navigate('/')}
@@ -129,16 +129,16 @@ const ShareView = () => {
     <div className="min-h-screen bg-dark-bg">
       {/* Header */}
       <header className="glass-card border-b border-neon-cyan/20 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-3 py-1.5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <h1 className="text-pixel text-xl neon-cyan">PixelLocker</h1>
-              <div className="hidden md:block h-6 w-px bg-gray-700" />
+            <div className="flex items-center gap-2">
+              <h1 className="text-pixel text-sm neon-cyan">PixelLocker</h1>
+              <div className="hidden md:block h-3 w-px bg-gray-700" />
               <button
                 onClick={() => navigate('/')}
-                className="flex items-center gap-2 text-gray-400 hover:text-neon-cyan transition-colors"
+                className="flex items-center gap-1 text-gray-400 hover:text-neon-cyan transition-colors text-xs"
               >
-                <ArrowLeft size={20} />
+                <ArrowLeft size={12} />
                 <span>Back to Home</span>
               </button>
             </div>
@@ -156,11 +156,11 @@ const ShareView = () => {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`p-4 rounded-lg mb-6 ${
+              className={`p-4 mb-6 ${
                 message.type === 'error' 
-                  ? 'bg-red-500/20 border border-red-500/50 text-red-400'
+                  ? 'bg-neon-purple/20 border border-neon-purple/50 text-neon-purple'
                   : message.type === 'success'
-                  ? 'bg-green-500/20 border border-green-500/50 text-green-400'
+                  ? 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
                   : 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
               }`}
             >
@@ -172,10 +172,10 @@ const ShareView = () => {
             </motion.div>
           )}
 
-          <div className="glass-card p-8 rounded-xl space-y-6">
+          <div className="glass-card p-4 space-y-4">
             <div className="flex items-center gap-3 mb-6">
               <FileText size={32} className="text-neon-cyan" />
-              <h2 className="text-3xl font-bold text-gray-100">Shared Document</h2>
+              <h2 className="text-lg font-bold text-gray-100">Shared Document</h2>
             </div>
 
             <div className="space-y-4">

@@ -30,9 +30,8 @@
 
 .header {
   position: relative;
-  padding: 20px 30px;
-  border-radius: 28px;
-  margin-bottom: 30px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,6 +40,8 @@
   box-shadow: 0px 6px 21px -8px rgba(255, 255, 255, 0.2);
   cursor: default;
   overflow: hidden;
+  border: 2px solid rgba(59, 130, 246, 0.4);
+  background: rgba(26, 26, 26, 0.95);
 }
 
 .header::before {
@@ -48,7 +49,6 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  border-radius: 28px;
   box-shadow: inset 0 0 12px -4px rgba(255, 255, 255, 0.3);
   background-color: rgba(42, 42, 42, 0.3);
   pointer-events: none;
@@ -59,7 +59,6 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  border-radius: 28px;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   filter: url(#glass-distortion);
@@ -71,7 +70,7 @@
 
 .header h1 {
   color: #ffffff;
-  font-size: 2rem;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: -0.5px;
   position: relative;
@@ -89,65 +88,67 @@
 .wallet-address {
   background: #1a1a1a;
   padding: 10px 15px;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 0.9rem;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(59, 130, 246, 0.3);
 }
 
 .btn {
   padding: 14px 28px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border: 2px solid;
+  font-size: 0.7rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   letter-spacing: 0.3px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .btn-primary {
-  background: #4A9EFF;
+  background: #3B82F6;
   color: #ffffff;
-  border: 2px solid #4A9EFF;
+  border: 2px solid #60A5FA;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(74, 158, 255, 0.4);
-  background: #5aa8ff;
-  border-color: #5aa8ff;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+  background: #2563EB;
+  border-color: #60A5FA;
 }
 
 .btn-secondary {
   background: transparent;
-  color: #4A9EFF;
-  border: 2px solid #4A9EFF;
+  color: #60A5FA;
+  border: 2px solid #3B82F6;
 }
 
 .btn-secondary:hover {
-  background: rgba(74, 158, 255, 0.1);
+  background: rgba(59, 130, 246, 0.1);
   transform: translateY(-2px);
 }
 
 .btn-danger {
-  background: #dc3545;
+  background: #3B82F6;
   color: white;
+  border: 2px solid #60A5FA;
 }
 
 .btn-danger:hover {
-  background: #c82333;
+  background: #2563EB;
+  border-color: #60A5FA;
 }
 
 .btn-success {
-  background: #28a745;
+  background: #3B82F6;
   color: white;
+  border: 2px solid #60A5FA;
 }
 
 .btn-success:hover {
-  background: #218838;
+  background: #2563EB;
+  border-color: #60A5FA;
 }
 
 .btn:disabled {
@@ -157,14 +158,15 @@
 
 .card {
   position: relative;
-  padding: 30px;
-  border-radius: 28px;
-  margin-bottom: 30px;
+  padding: 1.5rem;
+  margin-bottom: 20px;
   z-index: 1;
   isolation: isolate;
   box-shadow: 0px 6px 21px -8px rgba(255, 255, 255, 0.2);
   overflow: hidden;
   color: #ffffff;
+  border: 2px solid rgba(59, 130, 246, 0.4);
+  background: rgba(26, 26, 26, 0.95);
 }
 
 .card::before {
@@ -172,7 +174,6 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  border-radius: 28px;
   box-shadow: inset 0 0 12px -4px rgba(255, 255, 255, 0.3);
   background-color: rgba(42, 42, 42, 0.3);
   pointer-events: none;
@@ -183,7 +184,6 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  border-radius: 28px;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   filter: url(#glass-distortion);
@@ -200,10 +200,10 @@
 
 .card h2 {
   color: #ffffff;
-  margin-bottom: 20px;
-  font-size: 1.75rem;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .form-group {
@@ -222,18 +222,18 @@
 .form-group textarea {
   width: 100%;
   padding: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  font-size: 1rem;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  font-size: 0.7rem;
   transition: border-color 0.3s ease;
   background: #1a1a1a;
   color: #ffffff;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #4A9EFF;
+  border-color: #60A5FA;
   background: #1f1f1f;
 }
 
@@ -249,13 +249,14 @@
 
 .credential-item {
   position: relative;
-  padding: 20px;
-  border-radius: 20px;
-  border-left: 4px solid #4A9EFF;
+  padding: 1.5rem;
+  border-left: 4px solid #3B82F6;
   transition: transform 0.2s ease;
   isolation: isolate;
   box-shadow: 0px 6px 21px -8px rgba(255, 255, 255, 0.15);
   overflow: hidden;
+  border: 2px solid rgba(59, 130, 246, 0.4);
+  background: rgba(26, 26, 26, 0.95);
 }
 
 .credential-item::before {
@@ -263,7 +264,6 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  border-radius: 20px;
   box-shadow: inset 0 0 12px -4px rgba(255, 255, 255, 0.2);
   background-color: rgba(42, 42, 42, 0.3);
   pointer-events: none;
@@ -274,7 +274,6 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  border-radius: 20px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   filter: url(#glass-distortion);
@@ -286,11 +285,11 @@
 
 .credential-item:hover {
   transform: translateX(5px);
-  box-shadow: 0px 8px 25px -8px rgba(74, 158, 255, 0.3);
+  box-shadow: 0px 8px 25px -8px rgba(59, 130, 246, 0.3);
 }
 
 .credential-item.revoked {
-  border-left-color: #dc3545;
+  border-left-color: #3B82F6;
   opacity: 0.7;
 }
 
@@ -315,21 +314,21 @@
 
 .credential-status {
   padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   font-weight: 600;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .status-active {
-  background: rgba(40, 167, 69, 0.2);
-  color: #28a745;
-  border: 1px solid rgba(40, 167, 69, 0.3);
+  background: rgba(59, 130, 246, 0.2);
+  color: #60A5FA;
+  border: 2px solid rgba(59, 130, 246, 0.3);
 }
 
 .status-revoked {
-  background: rgba(220, 53, 69, 0.2);
-  color: #ff6b6b;
-  border: 1px solid rgba(220, 53, 69, 0.3);
+  background: rgba(59, 130, 246, 0.2);
+  color: #3B82F6;
+  border: 2px solid rgba(59, 130, 246, 0.3);
 }
 
 .credential-details {
@@ -344,7 +343,7 @@
 }
 
 .credential-detail strong {
-  color: #4A9EFF;
+  color: #60A5FA;
   display: block;
   margin-bottom: 5px;
 }
@@ -355,14 +354,16 @@
 }
 
 .alert {
-  padding: 15px 20px;
-  border-radius: 20px;
-  margin-bottom: 20px;
+  padding: 1rem;
+  margin-bottom: 15px;
   position: relative;
   z-index: 1;
   isolation: isolate;
   box-shadow: 0px 6px 21px -8px rgba(255, 255, 255, 0.15);
   overflow: hidden;
+  border: 2px solid;
+  font-size: 0.65rem;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .alert::before {
@@ -370,7 +371,6 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  border-radius: 20px;
   box-shadow: inset 0 0 12px -4px rgba(255, 255, 255, 0.2);
   pointer-events: none;
 }
@@ -380,7 +380,6 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  border-radius: 20px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   filter: url(#glass-distortion);
@@ -390,39 +389,39 @@
 }
 
 .alert-info {
-  background-color: rgba(74, 158, 255, 0.15);
-  color: #4A9EFF;
-  border-left: 4px solid #4A9EFF;
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60A5FA;
+  border-left: 4px solid #3B82F6;
   position: relative;
   z-index: 10;
 }
 
 .alert-info::after {
-  background: rgba(74, 158, 255, 0.1);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 .alert-success {
-  background-color: rgba(40, 167, 69, 0.15);
-  color: #28a745;
-  border-left: 4px solid #28a745;
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60A5FA;
+  border-left: 4px solid #3B82F6;
   position: relative;
   z-index: 10;
 }
 
 .alert-success::after {
-  background: rgba(40, 167, 69, 0.1);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 .alert-error {
-  background-color: rgba(220, 53, 69, 0.15);
-  color: #ff6b6b;
-  border-left: 4px solid #ff6b6b;
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #3B82F6;
+  border-left: 4px solid #3B82F6;
   position: relative;
   z-index: 10;
 }
 
 .alert-error::after {
-  background: rgba(220, 53, 69, 0.1);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 .loading {
@@ -457,11 +456,11 @@
   border: none;
   border-bottom: 3px solid transparent;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.6);
   transition: all 0.3s ease;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .tab:hover {
@@ -469,8 +468,8 @@
 }
 
 .tab.active {
-  color: #4A9EFF;
-  border-bottom-color: #4A9EFF;
+  color: #60A5FA;
+  border-bottom-color: #3B82F6;
 }
 
 .tab-content {
@@ -481,18 +480,19 @@
 
 .file-upload {
   position: relative;
-  border: 2px dashed #4A9EFF;
-  border-radius: 20px;
-  padding: 40px;
+  border: 2px dashed #3B82F6;
+  padding: 1.5rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: rgba(74, 158, 255, 0.05);
+  background: rgba(59, 130, 246, 0.05);
   color: #ffffff;
   isolation: isolate;
   overflow: hidden;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  font-size: 0.65rem;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .file-upload::before {
@@ -500,14 +500,13 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  border-radius: 20px;
-  box-shadow: inset 0 0 12px -4px rgba(74, 158, 255, 0.3);
+  box-shadow: inset 0 0 12px -4px rgba(59, 130, 246, 0.3);
   pointer-events: none;
 }
 
 .file-upload:hover {
-  background: rgba(74, 158, 255, 0.15);
-  border-color: #5aa8ff;
+  background: rgba(59, 130, 246, 0.15);
+  border-color: #60A5FA;
   transform: translateY(-2px);
 }
 
@@ -517,12 +516,13 @@
 
 .proof-section {
   position: relative;
-  padding: 20px;
-  border-radius: 20px;
-  margin-top: 20px;
+  padding: 1.5rem;
+  margin-top: 15px;
   isolation: isolate;
   box-shadow: 0px 6px 21px -8px rgba(255, 255, 255, 0.15);
   overflow: hidden;
+  border: 2px solid rgba(59, 130, 246, 0.4);
+  background: rgba(26, 26, 26, 0.95);
 }
 
 .proof-section::before {
@@ -530,7 +530,6 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  border-radius: 20px;
   box-shadow: inset 0 0 12px -4px rgba(255, 255, 255, 0.2);
   background-color: rgba(42, 42, 42, 0.3);
   pointer-events: none;
@@ -541,7 +540,6 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  border-radius: 20px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   filter: url(#glass-distortion);
@@ -555,32 +553,32 @@
   background: #2d2d2d;
   color: #f8f8f2;
   padding: 15px;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 0.85rem;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
   overflow-x: auto;
   margin-top: 10px;
   position: relative;
   z-index: 10;
+  border: 2px solid rgba(59, 130, 246, 0.4);
 }
 
 .glass-button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  background: rgba(59, 130, 246, 0.1);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  color: #60A5FA;
   padding: 12px 24px;
-  border-radius: 8px;
   cursor: pointer;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: all 0.3s ease;
   font-weight: 600;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
 }
 
 .glass-button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(59, 130, 246, 0.2);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
 

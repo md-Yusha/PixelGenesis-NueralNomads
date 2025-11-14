@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Key, CheckCircle, Edit2, X } from 'lucide-react'
 import { getDIDRegistryContract, getDIDRegistryContractReadOnly } from '../../utils/web3'
+import { logActivity, ActivityType } from '../../utils/activityLogger'
 
 const DIDManager = ({ account }) => {
   const [did, setDid] = useState('')
@@ -93,6 +94,11 @@ const DIDManager = ({ account }) => {
       // Reload DID from contract to ensure it's properly saved
       await loadDID()
       
+      // Log activity
+      logActivity(account, ActivityType.DID_REGISTERED, {
+        did: newDID.trim(),
+      })
+      
       setMessage({ type: 'success', text: 'DID registered successfully!' })
     } catch (error) {
       console.error('Error registering DID:', error)
@@ -119,6 +125,11 @@ const DIDManager = ({ account }) => {
       // Reload DID from contract to ensure it's properly saved
       await loadDID()
       
+      // Log activity
+      logActivity(account, ActivityType.DID_UPDATED, {
+        did: newDID.trim(),
+      })
+      
       setIsEditing(false)
       setMessage({ type: 'success', text: 'DID updated successfully!' })
     } catch (error) {
@@ -131,7 +142,7 @@ const DIDManager = ({ account }) => {
 
   if (!account || !account.startsWith('0x')) {
     return (
-      <div className="glass-card p-8 rounded-xl text-center">
+      <div className="glass-card p-4 text-center">
         <p className="text-gray-400">Please connect your wallet to manage your DID.</p>
       </div>
     )
@@ -144,7 +155,7 @@ const DIDManager = ({ account }) => {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-3xl font-bold text-gray-100 mb-2">DID Manager</h2>
+        <h2 className="text-lg font-bold text-gray-100 mb-2">DID Manager</h2>
         <p className="text-gray-400">
           Your Decentralized ID (DID) lets apps identify you securely, without central servers.
         </p>
@@ -156,9 +167,9 @@ const DIDManager = ({ account }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded-lg ${
+            className={`p-4 ${
               message.type === 'error' 
-                ? 'bg-red-500/20 border border-red-500/50 text-red-400'
+                ? 'bg-neon-purple/20 border border-neon-purple/50 text-neon-purple'
                 : 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
             }`}
           >
@@ -167,7 +178,7 @@ const DIDManager = ({ account }) => {
         )}
       </AnimatePresence>
 
-      <div className="glass-card p-8 rounded-xl space-y-6">
+      <div className="glass-card p-4 space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Your Digital Key (Wallet Address)
@@ -176,7 +187,7 @@ const DIDManager = ({ account }) => {
             type="text"
             value={account}
             readOnly
-            className="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg text-gray-400 font-mono text-sm cursor-not-allowed"
+            className="w-full px-4 py-3 bg-dark-card border-2 border-gray-700 text-gray-400 font-mono text-base cursor-not-allowed"
           />
           <p className="text-xs text-gray-500 mt-1">
             This is your base identity in PixelLocker
@@ -195,14 +206,14 @@ const DIDManager = ({ account }) => {
                   value={isEditing ? newDID : did}
                   onChange={(e) => setNewDID(e.target.value)}
                   readOnly={!isEditing}
-                  className={`flex-1 px-4 py-3 rounded-lg ${
+                  className={`flex-1 px-4 py-3 ${
                     isEditing 
                       ? 'bg-dark-card border border-neon-cyan text-gray-100'
                       : 'bg-dark-card border border-gray-700 text-gray-400 cursor-not-allowed'
                   }`}
                 />
                 {!isEditing && (
-                  <div className="px-3 py-1 bg-neon-cyan/20 text-neon-cyan rounded-full text-sm flex items-center gap-2">
+                  <div className="px-3 py-1 bg-neon-cyan/20 text-neon-cyan text-sm flex items-center gap-2 border-2 border-neon-cyan/50">
                     <CheckCircle size={14} />
                     Active
                   </div>
@@ -253,7 +264,7 @@ const DIDManager = ({ account }) => {
                 placeholder="e.g., did:ethr:0x1234567890abcdef..."
                 value={newDID}
                 onChange={(e) => setNewDID(e.target.value)}
-                className="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20"
+                className="w-full px-4 py-3 bg-dark-card border-2 border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20 text-lg"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Enter your Decentralized Identifier (DID)

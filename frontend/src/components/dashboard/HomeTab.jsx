@@ -75,8 +75,8 @@ const HomeTab = ({ account }) => {
       className="space-y-8"
     >
       {/* Welcome Section */}
-      <div className="glass-card p-8 rounded-xl">
-        <h2 className="text-3xl font-bold mb-4 text-gray-100">Welcome Back!</h2>
+      <div className="glass-card p-4">
+        <h2 className="text-lg font-bold mb-3 text-gray-100">Welcome Back!</h2>
         <div className="space-y-2 text-gray-400">
           <p>Your Digital Key: <span className="text-neon-cyan font-mono">{account}</span></p>
           {!loading && did && (
@@ -98,7 +98,7 @@ const HomeTab = ({ account }) => {
 
       {/* Document Categories */}
       <div>
-        <h3 className="text-2xl font-bold mb-6 text-gray-100">Your Document Categories</h3>
+        <h3 className="text-base font-bold mb-4 text-gray-100">Your Document Categories</h3>
         <div className="grid md:grid-cols-2 gap-6">
           {categories.map((category, index) => (
             <motion.div
@@ -108,12 +108,12 @@ const HomeTab = ({ account }) => {
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.02, y: -5 }}
               onClick={() => navigate(category.path)}
-              className="glass-card p-6 rounded-xl cursor-pointer group"
+              className="glass-card p-4 cursor-pointer group"
             >
               <div className={`${category.colorClass} mb-4`}>
                 {category.icon}
               </div>
-              <h4 className="text-xl font-bold mb-2 text-gray-100">{category.title}</h4>
+              <h4 className="text-sm font-bold mb-2 text-gray-100">{category.title}</h4>
               <p className="text-gray-400 mb-4">{category.description}</p>
               <div className="flex items-center gap-2 text-neon-cyan group-hover:gap-4 transition-all">
                 <span className="text-sm font-medium">View Documents</span>
@@ -125,8 +125,8 @@ const HomeTab = ({ account }) => {
       </div>
 
       {/* Quick Actions */}
-      <div className="glass-card p-6 rounded-xl">
-        <h3 className="text-xl font-bold mb-4 text-gray-100">Quick Actions</h3>
+      <div className="glass-card p-4">
+        <h3 className="text-base font-bold mb-3 text-gray-100">Quick Actions</h3>
         <div className="flex flex-wrap gap-4">
           <button
             onClick={() => navigate('/dashboard/issue')}

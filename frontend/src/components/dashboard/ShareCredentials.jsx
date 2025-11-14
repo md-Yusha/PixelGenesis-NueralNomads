@@ -6,6 +6,7 @@ import { getCredentialManagerContractReadOnly } from '../../utils/web3'
 import { formatAddress } from '../../utils/helpers'
 import { getIPFSFileUrl } from '../../utils/ipfs'
 import * as QRCode from 'qrcode'
+import { logActivity, ActivityType } from '../../utils/activityLogger'
 
 const ShareCredentials = ({ account }) => {
   const [credentials, setCredentials] = useState([])
@@ -118,6 +119,14 @@ const ShareCredentials = ({ account }) => {
       })
 
       setQrCodeDataUrl(qrCodeUrl)
+      
+      // Log activity
+      logActivity(account, ActivityType.DOCUMENT_SHARED, {
+        recipient: normalizedRecipient,
+        documentName: selectedDocument.name,
+        ipfsHash: selectedDocument.ipfsHash,
+      })
+      
       setMessage({ 
         type: 'success', 
         text: 'QR code generated! The recipient can scan this to access the document.' 
@@ -162,7 +171,7 @@ const ShareCredentials = ({ account }) => {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-3xl font-bold text-gray-100 mb-2 flex items-center gap-3">
+        <h2 className="text-lg font-bold text-gray-100 mb-2 flex items-center gap-3">
           <Share2 size={32} className="text-neon-cyan" />
           Share Credentials
         </h2>
@@ -177,9 +186,9 @@ const ShareCredentials = ({ account }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded-lg ${
+            className={`p-4 ${
               message.type === 'error' 
-                ? 'bg-red-500/20 border border-red-500/50 text-red-400'
+                ? 'bg-neon-purple/20 border border-neon-purple/50 text-neon-purple'
                 : 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
             }`}
           >
@@ -188,7 +197,7 @@ const ShareCredentials = ({ account }) => {
         )}
       </AnimatePresence>
 
-      <div className="glass-card p-6 rounded-xl space-y-6">
+      <div className="glass-card p-4 space-y-4">
         {/* Document Selection */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -204,7 +213,7 @@ const ShareCredentials = ({ account }) => {
                 <button
                   key={index}
                   onClick={() => setSelectedDocument(doc)}
-                  className={`p-3 rounded-lg text-left transition-all ${
+                  className={`p-3 text-left transition-all ${
                     selectedDocument?.id === doc.id
                       ? 'bg-neon-cyan/20 border-2 border-neon-cyan'
                       : 'bg-dark-card border border-gray-700 hover:border-neon-cyan/50'
@@ -237,7 +246,7 @@ const ShareCredentials = ({ account }) => {
             value={recipientAddress}
             onChange={(e) => setRecipientAddress(e.target.value)}
             placeholder="0x..."
-            className="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20"
+            className="w-full px-4 py-3 bg-dark-card border-2 border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20 text-lg"
           />
           <p className="text-xs text-gray-500 mt-1">
             Enter the Ethereum address of the person you want to share with
@@ -259,10 +268,10 @@ const ShareCredentials = ({ account }) => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center space-y-4 p-6 bg-dark-card rounded-lg"
+            className="flex flex-col items-center space-y-4 p-6 bg-dark-card border-2 border-gray-700"
           >
             <h3 className="text-lg font-bold text-gray-100">Share QR Code</h3>
-            <div className="p-4 bg-white rounded-lg">
+            <div className="p-4 bg-white border-2 border-gray-700">
               <img src={qrCodeDataUrl} alt="QR Code" className="w-64 h-64" />
             </div>
             <p className="text-sm text-gray-400 text-center max-w-md">

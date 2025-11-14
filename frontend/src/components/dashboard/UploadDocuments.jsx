@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Upload, CheckCircle, X } from 'lucide-react'
 import { uploadToIPFS } from '../../utils/ipfs'
+import { logActivity, ActivityType } from '../../utils/activityLogger'
 
 const UploadDocuments = ({ account }) => {
   const [selectedFile, setSelectedFile] = useState(null)
@@ -57,6 +58,12 @@ const UploadDocuments = ({ account }) => {
       })
       setSuccess(true)
 
+      // Log activity
+      logActivity(account, ActivityType.DOCUMENT_UPLOADED, {
+        documentName: documentName || selectedFile.name,
+        ipfsHash,
+      })
+
       // Reset form
       setSelectedFile(null)
       setDocumentName('')
@@ -77,7 +84,7 @@ const UploadDocuments = ({ account }) => {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-3xl font-bold text-gray-100 mb-2">Upload Documents</h2>
+        <h2 className="text-lg font-bold text-gray-100 mb-2">Upload Documents</h2>
         <p className="text-gray-400">
           Upload your personal documents to secure decentralized storage (IPFS).
         </p>
@@ -89,12 +96,12 @@ const UploadDocuments = ({ account }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded-lg ${
+            className={`p-4 ${
               message.type === 'error' 
-                ? 'bg-red-500/20 border border-red-500/50 text-red-400'
+                ? 'bg-neon-purple/20 border border-neon-purple/50 text-neon-purple'
                 : message.type === 'success'
                 ? 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
-                : 'bg-blue-500/20 border border-blue-500/50 text-blue-400'
+                : 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
             }`}
           >
             {message.text}
@@ -106,7 +113,7 @@ const UploadDocuments = ({ account }) => {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="glass-card p-6 rounded-xl border-2 border-neon-cyan/50"
+          className="glass-card p-4 border-2 border-neon-cyan/50"
         >
           <div className="flex items-center gap-3 text-neon-cyan mb-4">
             <CheckCircle size={32} />
@@ -119,7 +126,7 @@ const UploadDocuments = ({ account }) => {
         </motion.div>
       )}
 
-      <form onSubmit={handleUpload} className="glass-card p-8 rounded-xl space-y-6">
+      <form onSubmit={handleUpload} className="glass-card p-4 space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Document Name
@@ -129,7 +136,7 @@ const UploadDocuments = ({ account }) => {
             value={documentName}
             onChange={(e) => setDocumentName(e.target.value)}
             placeholder="e.g., Passport, Driver License, Certificate"
-            className="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20"
+            className="w-full px-4 py-3 bg-dark-card border-2 border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-2 focus:ring-neon-cyan/20 text-lg"
           />
         </div>
 
@@ -139,7 +146,7 @@ const UploadDocuments = ({ account }) => {
           </label>
           <div
             onClick={() => document.getElementById('file-input-upload').click()}
-            className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center cursor-pointer hover:border-neon-cyan transition-colors"
+            className="border-2 border-dashed border-gray-700 p-8 text-center cursor-pointer hover:border-neon-cyan transition-colors"
           >
             <input
               id="file-input-upload"

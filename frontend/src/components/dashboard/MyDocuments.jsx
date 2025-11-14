@@ -6,6 +6,7 @@ import { ethers } from 'ethers'
 import { getCredentialManagerContractReadOnly } from '../../utils/web3'
 import { formatAddress, formatDate } from '../../utils/helpers'
 import { getIPFSFileUrl } from '../../utils/ipfs'
+import { logActivity, ActivityType } from '../../utils/activityLogger'
 
 const MyDocuments = ({ account }) => {
   const [searchParams] = useSearchParams()
@@ -165,7 +166,7 @@ const MyDocuments = ({ account }) => {
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-3xl font-bold text-gray-100">My Documents</h2>
+          <h2 className="text-lg font-bold text-gray-100">My Documents</h2>
           <p className="text-sm text-gray-500 mt-1">
             Documents issued to: <span className="text-neon-cyan font-mono">{formatAddress(account)}</span>
             {account && account !== ethers.getAddress(account) && (
@@ -198,7 +199,7 @@ const MyDocuments = ({ account }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="glass-card p-12 rounded-xl text-center"
+          className="glass-card p-4 text-center"
         >
           <FileText size={64} className="mx-auto mb-4 text-gray-600" />
           <p className="text-xl text-gray-400 mb-2">No documents found</p>
@@ -216,25 +217,25 @@ const MyDocuments = ({ account }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`glass-card p-6 rounded-xl ${
-                document.isRevoked ? 'opacity-60 border-red-500/50' : ''
+              className={`glass-card p-4 ${
+                document.isRevoked ? 'opacity-60 border-neon-purple/50' : ''
               }`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
                     {document.type === 'personal' ? (
-                      <span className="px-3 py-1 bg-neon-purple/20 text-neon-purple rounded-full text-sm font-medium flex items-center gap-2">
+                      <span className="px-3 py-1 bg-neon-purple/20 text-neon-purple text-sm font-medium flex items-center gap-2 border-2 border-neon-purple/50">
                         <FileText size={14} />
                         Personal
                       </span>
                     ) : document.isRevoked ? (
-                      <span className="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-sm font-medium flex items-center gap-2">
+                      <span className="px-3 py-1 bg-neon-purple/20 text-neon-purple text-sm font-medium flex items-center gap-2 border-2 border-neon-purple/50">
                         <X size={14} />
                         Revoked
                       </span>
                     ) : (
-                      <span className="px-3 py-1 bg-neon-cyan/20 text-neon-cyan rounded-full text-sm font-medium flex items-center gap-2">
+                      <span className="px-3 py-1 bg-neon-cyan/20 text-neon-cyan text-sm font-medium flex items-center gap-2 border-2 border-neon-cyan/50">
                         <CheckCircle size={14} />
                         Active
                       </span>
@@ -272,7 +273,13 @@ const MyDocuments = ({ account }) => {
 
                 <div className="flex gap-2 ml-4">
                   <button
-                    onClick={() => window.open(getIPFSFileUrl(document.ipfsHash), '_blank')}
+                    onClick={() => {
+                      logActivity(account, ActivityType.DOCUMENT_VIEWED, {
+                        documentName: document.name,
+                        ipfsHash: document.ipfsHash,
+                      })
+                      window.open(getIPFSFileUrl(document.ipfsHash), '_blank')
+                    }}
                     className="neon-button-secondary px-4 py-2 text-sm flex items-center gap-2"
                   >
                     <Eye size={16} />
@@ -309,7 +316,7 @@ const CredentialModal = ({ credential, onClose }) => (
       animate={{ scale: 1 }}
       exit={{ scale: 0.9 }}
       onClick={(e) => e.stopPropagation()}
-      className="glass-card p-8 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+      className="glass-card p-4 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
     >
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-2xl font-bold text-gray-100">Document Details</h3>

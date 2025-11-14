@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route, NavLink } from 'react-router-dom'
+import { Routes, Route, NavLink, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Home, FileText, Upload, Key, Shield, LogOut, UserPlus, Share2, Scan } from 'lucide-react'
+import { Home, FileText, Upload, Key, Shield, LogOut, UserPlus, Share2, Scan, Activity } from 'lucide-react'
 import HomeTab from '../components/dashboard/HomeTab'
 import MyDocuments from '../components/dashboard/MyDocuments'
 import UploadDocuments from '../components/dashboard/UploadDocuments'
@@ -11,10 +11,12 @@ import IssuerDashboard from '../components/dashboard/IssuerDashboard'
 import OwnerDashboard from '../components/dashboard/OwnerDashboard'
 import ShareCredentials from '../components/dashboard/ShareCredentials'
 import ScanDocument from '../components/dashboard/ScanDocument'
+import ActivityTab from '../components/dashboard/ActivityTab'
 import { formatAddress } from '../utils/helpers'
 import { determineUserRole } from '../utils/roles'
 
 const Dashboard = ({ account, setAccount }) => {
+  const navigate = useNavigate()
   const [userRole, setUserRole] = useState('user')
   const [loadingRole, setLoadingRole] = useState(true)
 
@@ -42,38 +44,47 @@ const Dashboard = ({ account, setAccount }) => {
 
   const handleDisconnect = () => {
     setAccount(null)
+    navigate('/', { replace: true })
   }
 
   // Define tabs based on role
   const getTabs = () => {
+    const baseTabs = []
+    
     if (userRole === 'owner') {
-      return [
-        { id: 'owner', label: 'Owner Dashboard', icon: Shield, path: '/dashboard/owner' },
-      ]
+      baseTabs.push(
+        { id: 'owner', label: 'Owner Dashboard', icon: Shield, path: '/dashboard/owner' }
+      )
     } else if (userRole === 'issuer') {
-      return [
+      baseTabs.push(
         { id: 'home', label: 'Home', icon: Home, path: '/dashboard' },
         { id: 'issuer', label: 'Issuer Dashboard', icon: Shield, path: '/dashboard/issuer' },
         { id: 'issue', label: 'Issue Document', icon: Upload, path: '/dashboard/issue' },
-        { id: 'scan', label: 'Scan Document', icon: Scan, path: '/dashboard/scan' },
-      ]
+        { id: 'scan', label: 'Scan Document', icon: Scan, path: '/dashboard/scan' }
+      )
     } else if (userRole === 'verifier') {
-      return [
+      baseTabs.push(
         { id: 'home', label: 'Home', icon: Home, path: '/dashboard' },
-        { id: 'scan', label: 'Scan Document', icon: Scan, path: '/dashboard/scan' },
-        // Verifier dashboard will be added later
-      ]
+        { id: 'scan', label: 'Scan Document', icon: Scan, path: '/dashboard/scan' }
+      )
     } else {
       // User role
-      return [
+      baseTabs.push(
         { id: 'home', label: 'Home', icon: Home, path: '/dashboard' },
         { id: 'documents', label: 'My Documents', icon: FileText, path: '/dashboard/documents' },
         { id: 'upload', label: 'Upload Documents', icon: Upload, path: '/dashboard/upload' },
         { id: 'did', label: 'DID Manager', icon: Key, path: '/dashboard/did' },
         { id: 'share', label: 'Share Credentials', icon: Share2, path: '/dashboard/share' },
-        { id: 'scan', label: 'Scan Document', icon: Scan, path: '/dashboard/scan' },
-      ]
+        { id: 'scan', label: 'Scan Document', icon: Scan, path: '/dashboard/scan' }
+      )
     }
+    
+    // Add Activity tab to all roles
+    baseTabs.push(
+      { id: 'activity', label: 'Activity', icon: Activity, path: '/dashboard/activity' }
+    )
+    
+    return baseTabs
   }
 
   const tabs = getTabs()
@@ -82,16 +93,16 @@ const Dashboard = ({ account, setAccount }) => {
     <div className="min-h-screen bg-dark-bg">
       {/* Header */}
       <header className="glass-card border-b border-neon-cyan/20 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-3 py-1.5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <h1 className="text-pixel text-xl neon-cyan">PixelLocker</h1>
-              <div className="hidden md:block h-6 w-px bg-gray-700" />
-              <div className="text-sm">
-                <div className="text-gray-400">Connected as</div>
-                <div className="text-neon-cyan font-mono">{formatAddress(account)}</div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-pixel text-sm neon-cyan">PixelLocker</h1>
+              <div className="hidden md:block h-3 w-px bg-gray-700" />
+              <div className="text-xs">
+                <div className="text-gray-400 text-xs">Connected as</div>
+                <div className="text-neon-cyan font-mono text-xs">{formatAddress(account)}</div>
                 {!loadingRole && (
-                  <div className="text-xs text-gray-500 mt-1 capitalize">
+                  <div className="text-xs text-gray-500 capitalize">
                     Role: <span className="text-neon-purple">{userRole}</span>
                   </div>
                 )}
@@ -99,9 +110,9 @@ const Dashboard = ({ account, setAccount }) => {
             </div>
             <button
               onClick={handleDisconnect}
-              className="neon-button-secondary px-4 py-2 flex items-center gap-2 text-sm"
+              className="neon-button-secondary px-2 py-1 flex items-center gap-1 text-xs"
             >
-              <LogOut size={16} />
+              <LogOut size={12} />
               Disconnect
             </button>
           </div>
@@ -120,7 +131,7 @@ const Dashboard = ({ account, setAccount }) => {
                     key={tab.id}
                     to={tab.path}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                      `flex items-center gap-3 px-4 py-3 transition-all ${
                         isActive
                           ? 'bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/50'
                           : 'text-gray-400 hover:text-neon-cyan hover:bg-dark-card'
@@ -170,6 +181,9 @@ const Dashboard = ({ account, setAccount }) => {
                   {(userRole === 'issuer' || userRole === 'verifier' || userRole === 'user') && (
                     <Route path="/scan" element={<ScanDocument account={account} />} />
                   )}
+                  
+                  {/* Activity Route - Available for all roles */}
+                  <Route path="/activity" element={<ActivityTab account={account} />} />
                   
                   {/* Verifier Routes - will be added later */}
                 </>

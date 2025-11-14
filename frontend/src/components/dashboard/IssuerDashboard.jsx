@@ -5,6 +5,7 @@ import { ethers } from 'ethers'
 import { getCredentialManagerContract, getCredentialManagerContractReadOnly } from '../../utils/web3'
 import { formatAddress, formatDate } from '../../utils/helpers'
 import { getIPFSFileUrl } from '../../utils/ipfs'
+import { logActivity, ActivityType } from '../../utils/activityLogger'
 
 const IssuerDashboard = ({ account }) => {
   const [issuedCredentials, setIssuedCredentials] = useState([])
@@ -230,6 +231,11 @@ const IssuerDashboard = ({ account }) => {
       const tx = await contract.revokeCredential(credentialId)
       await tx.wait()
 
+      // Log activity
+      logActivity(account, ActivityType.CREDENTIAL_REVOKED, {
+        credentialId,
+      })
+
       setMessage({ 
         type: 'success', 
         text: `Credential revoked successfully! Transaction: ${tx.hash.substring(0, 20)}...` 
@@ -256,7 +262,7 @@ const IssuerDashboard = ({ account }) => {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-3xl font-bold text-gray-100 mb-2 flex items-center gap-3">
+        <h2 className="text-lg font-bold text-gray-100 mb-2 flex items-center gap-3">
           <Shield size={32} className="text-neon-cyan" />
           Issuer Dashboard
         </h2>
@@ -274,9 +280,9 @@ const IssuerDashboard = ({ account }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded-lg ${
+            className={`p-4 ${
               message.type === 'error' 
-                ? 'bg-red-500/20 border border-red-500/50 text-red-400'
+                ? 'bg-neon-purple/20 border border-neon-purple/50 text-neon-purple'
                 : 'bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan'
             }`}
           >
@@ -293,7 +299,7 @@ const IssuerDashboard = ({ account }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="glass-card p-12 rounded-xl text-center"
+          className="glass-card p-4 text-center"
         >
           <Shield size={64} className="mx-auto mb-4 text-gray-600" />
           <p className="text-xl text-gray-400 mb-2">No credentials issued yet</p>
@@ -312,20 +318,20 @@ const IssuerDashboard = ({ account }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`glass-card p-6 rounded-xl ${
-                credential.isRevoked ? 'opacity-60 border-red-500/50' : ''
+              className={`glass-card p-4 ${
+                credential.isRevoked ? 'opacity-60 border-neon-purple/50' : ''
               }`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-4">
                     {credential.isRevoked ? (
-                      <span className="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-sm font-medium flex items-center gap-2">
+                      <span className="px-3 py-1 bg-neon-purple/20 text-neon-purple text-sm font-medium flex items-center gap-2 border-2 border-neon-purple/50">
                         <X size={14} />
                         Revoked
                       </span>
                     ) : (
-                      <span className="px-3 py-1 bg-neon-cyan/20 text-neon-cyan rounded-full text-sm font-medium flex items-center gap-2">
+                      <span className="px-3 py-1 bg-neon-cyan/20 text-neon-cyan text-sm font-medium flex items-center gap-2 border-2 border-neon-cyan/50">
                         <CheckCircle size={14} />
                         Active
                       </span>
@@ -344,7 +350,7 @@ const IssuerDashboard = ({ account }) => {
                     {credential.revokedAt && (
                       <div>
                         <span className="text-gray-500">Revoked on:</span>{' '}
-                        <span className="text-red-400">{formatDate(credential.revokedAt)}</span>
+                        <span className="text-neon-purple">{formatDate(credential.revokedAt)}</span>
                       </div>
                     )}
                     <div>
@@ -356,7 +362,14 @@ const IssuerDashboard = ({ account }) => {
 
                 <div className="flex gap-2 ml-4">
                   <button
-                    onClick={() => window.open(getIPFSFileUrl(credential.ipfsHash), '_blank')}
+                    onClick={() => {
+                      logActivity(account, ActivityType.DOCUMENT_VIEWED, {
+                        documentName: `Credential ${credential.credentialId.substring(0, 8)}...`,
+                        ipfsHash: credential.ipfsHash,
+                        credentialId: credential.credentialId,
+                      })
+                      window.open(getIPFSFileUrl(credential.ipfsHash), '_blank')
+                    }}
                     className="neon-button-secondary px-4 py-2 text-sm flex items-center gap-2"
                   >
                     <Eye size={16} />
@@ -366,7 +379,7 @@ const IssuerDashboard = ({ account }) => {
                     <button
                       onClick={() => handleRevoke(credential.credentialId)}
                       disabled={loading}
-                      className="px-4 py-2 text-sm bg-red-500/20 text-red-400 border border-red-500/50 rounded-lg hover:bg-red-500/30 transition-colors disabled:opacity-50 flex items-center gap-2"
+                      className="px-4 py-2 text-sm bg-neon-purple/20 text-neon-purple border-2 border-neon-purple/50 hover:bg-neon-purple/30 transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
                       <X size={16} />
                       Revoke

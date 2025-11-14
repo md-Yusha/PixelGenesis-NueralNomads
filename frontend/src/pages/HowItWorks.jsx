@@ -55,10 +55,10 @@ const HowItWorks = () => {
             Back to Home
           </Link>
           
-          <h1 className="text-pixel text-4xl md:text-5xl neon-cyan mb-4">
+          <h1 className="text-pixel text-3xl md:text-4xl neon-cyan mb-4">
             How PixelLocker Works
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl">
+          <p className="text-lg text-gray-400 max-w-2xl">
             Simple, secure, and completely under your control. Here's how you can own your digital identity.
           </p>
         </motion.div>
@@ -72,7 +72,7 @@ const HowItWorks = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2, duration: 0.6 }}
-              className="glass-card p-8 rounded-xl"
+              className="glass-card p-4"
             >
               <div className="flex flex-col md:flex-row items-start gap-6">
               <div className={`${step.colorClass} flex-shrink-0`}>
@@ -81,9 +81,9 @@ const HowItWorks = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-4">
                     <span className="text-pixel text-2xl neon-cyan">{step.number}</span>
-                    <h2 className="text-2xl font-bold text-gray-100">{step.title}</h2>
+                    <h2 className="text-xl font-bold text-gray-100">{step.title}</h2>
                   </div>
-                  <p className="text-lg text-gray-400 leading-relaxed">
+                  <p className="text-base text-gray-400 leading-relaxed">
                     {step.description}
                   </p>
                 </div>
